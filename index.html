@@ -47,7 +47,7 @@ label{display:block;font-size:13px;font-weight:700;margin:11px 0 6px}input,selec
   </main>
 </section>
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycbz7D-Qn0V_GmQQHR_b3N0G9F0fbDd0oQ5SzFKpCwSHT72hi-wBAsAPEpkpup5mTEJGtWQ/execs';
+const API_URL='https://script.google.com/macros/s/AKfycbz7D-Qn0V_GmQQHR_b3N0G9F0fbDd0oQ5SzFKpCwSHT72hi-wBAsAPEpkpup5mTEJGtWQ/exec';
 const state={token:'',user:null,boot:null,current:'dashboard',data:{}};
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
@@ -65,7 +65,7 @@ async function login(){
  catch(e){$('loginMsg').innerHTML='<div class="msg err">'+esc(e.message)+'</div>'}finally{$('loginBtn').disabled=false}
 }
 function openApp(){$('login').classList.add('hidden');$('app').classList.remove('hidden');buildNav()}
-async function loadBoot(){try{state.boot=(await api('bootstrap')).data;try{const kelasResp=await api('kelas.list');if(kelasResp&&kelasResp.success&&Array.isArray(kelasResp.data)){state.boot.kelas=kelasResp.data}}catch(kelasErr){console.warn('Daftar kelas tambahan tidak dapat dimuat:',kelasErr)}}catch(e){console.warn(e)}}
+async function loadBoot(){try{state.boot=(await api('bootstrap')).data}catch(e){console.warn(e)}}
 function buildNav(){
  const base=[['dashboard','Dashboard','Umum'],['profil.get','Profil Guru','Data Guru'],['jadwal.list','Jadwal Mengajar','Data Guru'],['kelas.list','Administrasi Kelas','Data Kelas'],['jurnal.list','Jurnal Mengajar','Pembelajaran'],['absensi.list','Absensi Siswa','Pembelajaran'],['materi.list','Materi Pembelajaran','Pembelajaran'],['tugas.list','Tugas','Pembelajaran'],['penilaian.list','Penilaian','Pembelajaran'],['laporan','Laporan','Laporan']];
  if(state.user.role==='ADMIN')base.push(['admin.guru.list','Data Guru','ADMIN'],['admin.kelas.list','Data Kelas','ADMIN'],['admin.siswa.list','Data Siswa','ADMIN'],['admin.audit','Audit Database','ADMIN']);
