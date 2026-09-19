@@ -5,100 +5,137 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Administrasi Guru SMK</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f7fb;color:#172033}
-button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
-.login{min-height:100vh;display:grid;place-items:center;padding:20px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 30px #0001}
-.login .card{width:min(420px,100%)}label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px}
-input,select,textarea{width:100%;padding:11px;border:1px solid #d8deea;border-radius:9px;background:#fff}
-.primary{width:100%;border:0;border-radius:9px;padding:12px;background:#263b73;color:#fff;font-weight:700;margin-top:16px}
-.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.side{background:#16213e;color:#fff;padding:18px;position:sticky;top:0;height:100vh}
-.brand{font-size:20px;font-weight:800;margin-bottom:20px}.nav button{width:100%;text-align:left;background:transparent;color:#dce5ff;border:0;padding:11px;border-radius:8px;margin:2px 0}
-.nav button:hover,.nav button.active{background:#ffffff18;color:#fff}.main{padding:24px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{background:#fff;padding:18px;border-radius:14px;box-shadow:0 2px 12px #0000000a}.stat b{font-size:28px;display:block;margin-top:8px}
-.panel{background:#fff;border-radius:14px;padding:18px;margin-top:18px;box-shadow:0 2px 12px #0000000a}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:10px;border-bottom:1px solid #edf0f5;text-align:left;white-space:nowrap}th{background:#f8f9fc;position:sticky;top:0}
-.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:8px;padding:9px 13px;background:#263b73;color:#fff}.btn.light{background:#edf1f8;color:#26324d}.msg{margin-top:12px;padding:10px;border-radius:8px;background:#f2f5fb}.ok{background:#eaf8ef}.err{background:#fff0f0}
-.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#edf1f8;font-size:12px}.menuBtn{display:none}
-@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:fixed;z-index:10;left:-260px;width:240px;transition:.2s}.side.open{left:0}.menuBtn{display:block}.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.grid,.formgrid{grid-template-columns:1fr}.main{padding:14px}}
+:root{--nav:#16213e;--primary:#263b73;--bg:#f4f6fa;--card:#fff;--text:#172033;--muted:#667085;--line:#e5e9f0;--ok:#157347;--danger:#b42318;--warning:#a15c00}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#eef2fb,#f8fafc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 12px 40px #17203312}.login .card{width:min(430px,100%)}
+.logo{width:54px;height:54px;border-radius:14px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:900;font-size:20px;margin-bottom:14px}.login h1{margin:0 0 6px}.sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+label{display:block;font-size:13px;font-weight:700;margin:11px 0 6px}input,select,textarea{width:100%;padding:10px 11px;border:1px solid #d6dce7;border-radius:9px;background:#fff;color:var(--text)}textarea{min-height:92px;resize:vertical}.primary{width:100%;border:0;border-radius:9px;padding:12px;background:var(--primary);color:#fff;font-weight:800;margin-top:16px}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:var(--nav);color:#fff;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}.brand{font-size:19px;font-weight:900;margin-bottom:10px}.userbox{padding:12px;background:#ffffff10;border-radius:12px;margin-bottom:15px}.userbox small{color:#cbd5ee}.nav-section{font-size:11px;text-transform:uppercase;color:#93a2c7;font-weight:800;margin:17px 8px 5px}.nav button{width:100%;text-align:left;background:transparent;color:#dce5ff;border:0;padding:10px 11px;border-radius:8px;margin:2px 0}.nav button:hover,.nav button.active{background:#ffffff16;color:#fff}.main{padding:22px;max-width:1600px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.top h2{margin:0;font-size:23px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:8px;padding:9px 13px;background:var(--primary);color:#fff;font-weight:700}.btn.light{background:#e9edf5;color:#26324d}.btn.danger{background:#b42318}.btn.success{background:#157347}.btn:disabled{opacity:.55;cursor:not-allowed}.menuBtn{display:none}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{background:#fff;padding:17px;border:1px solid var(--line);border-radius:14px}.stat .label{font-size:12px;color:var(--muted)}.stat b{display:block;font-size:25px;margin-top:7px}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:15px;box-shadow:0 2px 10px #00000006}.panel h3{margin:0 0 14px}.muted{color:var(--muted)}.msg{padding:10px 12px;border-radius:9px;margin:10px 0;background:#eef2f8}.ok{background:#eaf7ee;color:var(--ok)}.err{background:#fff0ee;color:var(--danger)}.warn{background:#fff7e6;color:var(--warning)}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.formgrid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.field.full{grid-column:1/-1}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;font-size:13px;background:#fff}th,td{padding:9px 10px;border-bottom:1px solid #edf0f5;text-align:left;vertical-align:top}th{background:#f8f9fc;white-space:nowrap;font-size:12px}tr:last-child td{border-bottom:0}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-bottom:13px}.toolbar .field{min-width:160px;flex:1}.toolbar .field.small{min-width:120px;flex:0 0 150px}.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#edf1f8;font-size:11px;font-weight:700}.status-ok{color:var(--ok);font-weight:800}.status-no{color:var(--danger);font-weight:800}.empty{padding:24px;text-align:center;color:var(--muted)}.loading{padding:35px;text-align:center;color:var(--muted)}.right{text-align:right}.checkbox{width:auto}.stickyActions{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.kpi{display:flex;gap:10px;flex-wrap:wrap}.kpi .mini{padding:9px 11px;border-radius:9px;background:#f1f4f9;font-size:12px}.printOnly{display:none}
+@media(max-width:980px){.app{grid-template-columns:1fr}.side{position:fixed;z-index:30;left:-270px;width:250px;transition:.2s}.side.open{left:0}.menuBtn{display:block}.grid{grid-template-columns:repeat(2,1fr)}.formgrid.three{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.grid,.formgrid,.formgrid.three{grid-template-columns:1fr}.main{padding:13px}.top h2{font-size:19px}.toolbar .field,.toolbar .field.small{min-width:100%;flex:1}}
+@media print{.side,.top,.noPrint{display:none!important}.app{display:block}.main{padding:0}.panel{border:0;box-shadow:none}.printOnly{display:block}}
 </style>
 </head>
 <body>
 <section id="login" class="login">
-<div class="card">
-<h1>Administrasi Guru SMK</h1><p>Contoh akun: <b>admin/admin123</b> atau <b>guru/guru123</b></p>
-<label>Username</label><input id="username" autocomplete="username">
-<label>Password</label><input id="password" type="password" autocomplete="current-password">
-<button class="primary" id="loginBtn">Masuk</button><div id="loginMsg"></div>
-</div>
+  <div class="card">
+    <div class="logo">AG</div>
+    <h1>Administrasi Guru SMK</h1>
+    <p class="sub">Sistem administrasi pembelajaran guru</p>
+    <label>Username</label><input id="username" autocomplete="username">
+    <label>Password</label><input id="password" type="password" autocomplete="current-password">
+    <button class="primary" id="loginBtn">Masuk</button>
+    <div id="loginMsg"></div>
+  </div>
 </section>
-
 <section id="app" class="app hidden">
-<aside id="side" class="side"><div class="brand">ADMIN GURU SMK</div><div id="userInfo"></div><div class="nav" id="nav"></div></aside>
-<main class="main">
-<div class="top"><button class="btn menuBtn" id="menuBtn">☰</button><h2 id="title">Dashboard</h2><button class="btn light" id="logoutBtn">Keluar</button></div>
-<div id="content"></div>
-</main>
+  <aside id="side" class="side">
+    <div class="brand">ADMIN GURU SMK</div>
+    <div id="userInfo" class="userbox"></div>
+    <div id="nav" class="nav"></div>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div class="actions"><button class="btn light menuBtn" id="menuBtn">☰</button><h2 id="title">Dashboard</h2></div>
+      <div class="actions"><button class="btn light" onclick="refreshCurrent()">Muat ulang</button><button class="btn danger" id="logoutBtn">Keluar</button></div>
+    </div>
+    <div id="content"></div>
+  </main>
 </section>
-
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbybsYVXZJZpzzY7RWUuABT0b4uhi_W4vs19l-qQy74ZCyVtwh_Lm1nu0JCAXQfwUD3FTg/exec';
-const state={token:'',user:null,boot:null,cache:{}};
-
-async function api(action,data={}){
-  if(API_URL.startsWith('GANTI_')) throw new Error('API_URL belum diisi pada index.html.');
-  const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,token:state.token,...data})});
-  if(!res.ok) throw new Error('HTTP '+res.status);
-  const j=await res.json(); if(!j.success) throw new Error(j.message||'Permintaan gagal'); return j;
+const API_URL='https://script.google.com/macros/s/AKfycbybsYVXZJZpzzY7RWUuABT0b4uhi_W4vs19l-qQy74ZCyVtwh_Lm1nu0JCAXQfwUD3FTg/exec';
+const state={token:'',user:null,boot:null,current:'dashboard',data:{}};
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+function fail(msg){throw new Error(msg)}
+async function request(payload){
+ if(API_URL.startsWith('GANTI_')) fail('API_URL belum diisi pada index.html.');
+ const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+ if(!r.ok) fail('HTTP '+r.status);
+ const j=await r.json(); if(!j.success) fail(j.message||'Permintaan gagal'); return j;
 }
-function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function setMsg(id,msg,ok=false){const e=document.getElementById(id);if(e)e.innerHTML='<div class="msg '+(ok?'ok':'err')+'">'+esc(msg)+'</div>'}
-function table(rows){
- if(!rows?.length)return '<p>Belum ada data.</p>';
- const cols=Object.keys(rows[0]); return '<div class="tablewrap"><table><thead><tr>'+cols.map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(r[c])+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
-}
+async function api(action,data={}){return request({action,token:state.token,...data})}
 async function login(){
- const b=document.getElementById('loginBtn');b.disabled=true;
- try{const j=await apiLogin(document.getElementById('username').value,document.getElementById('password').value);
- state.token=j.token;state.user=j.user;localStorage.setItem('ag_session',JSON.stringify({token:state.token,user:state.user}));
- document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');buildNav();await show('dashboard');
- }catch(e){setMsg('loginMsg',e.message)}finally{b.disabled=false}
+ $('loginBtn').disabled=true;$('loginMsg').innerHTML='';
+ try{const j=await request({action:'login',username:$('username').value.trim(),password:$('password').value});state.token=j.token;state.user=j.user;localStorage.setItem('ag_session',JSON.stringify({token:state.token,user:state.user}));openApp();await loadBoot();await show('dashboard')}
+ catch(e){$('loginMsg').innerHTML='<div class="msg err">'+esc(e.message)+'</div>'}finally{$('loginBtn').disabled=false}
 }
-async function apiLogin(username,password){
- if(API_URL.startsWith('GANTI_')) throw new Error('API_URL belum diisi pada index.html.');
- const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'login',username,password})});
- const j=await r.json();if(!j.success)throw new Error(j.message);return j;
-}
+function openApp(){$('login').classList.add('hidden');$('app').classList.remove('hidden');buildNav()}
+async function loadBoot(){try{state.boot=(await api('bootstrap')).data}catch(e){console.warn(e)}}
 function buildNav(){
- const items=[['dashboard','Dashboard'],['profil.get','Profil Guru'],['jadwal.list','Jadwal Mengajar'],['kelas.list','Administrasi Kelas'],['jurnal.list','Jurnal Mengajar'],['absensi.list','Absensi Siswa'],['materi.list','Materi Pembelajaran'],['tugas.list','Tugas'],['penilaian.list','Penilaian'],['laporan','Laporan']];
- if(state.user.role==='ADMIN') items.push(['admin.guru.list','Data Guru'],['admin.kelas.list','Data Kelas'],['admin.siswa.list','Data Siswa']);
- document.getElementById('userInfo').innerHTML='<span class="badge">'+esc(state.user.role)+'</span><p>'+esc(state.user.nama||state.user.username)+'</p>';
- document.getElementById('nav').innerHTML=items.map(([a,t])=>`<button data-action="${a}">${t}</button>`).join('');
+ const base=[['dashboard','Dashboard','Umum'],['profil.get','Profil Guru','Data Guru'],['jadwal.list','Jadwal Mengajar','Data Guru'],['kelas.list','Administrasi Kelas','Data Kelas'],['jurnal.list','Jurnal Mengajar','Pembelajaran'],['absensi.list','Absensi Siswa','Pembelajaran'],['materi.list','Materi Pembelajaran','Pembelajaran'],['tugas.list','Tugas','Pembelajaran'],['penilaian.list','Penilaian','Pembelajaran'],['laporan','Laporan','Laporan']];
+ if(state.user.role==='ADMIN')base.push(['admin.guru.list','Data Guru','ADMIN'],['admin.kelas.list','Data Kelas','ADMIN'],['admin.siswa.list','Data Siswa','ADMIN'],['admin.audit','Audit Database','ADMIN']);
+ let sec='';$('userInfo').innerHTML='<span class="badge">'+esc(state.user.role)+'</span><div style="font-weight:800;margin-top:7px">'+esc(state.user.nama||state.user.username)+'</div><small>'+esc(state.user.nuptk||'')+'</small>';
+ $('nav').innerHTML=base.map(x=>{let h=x[2]!==sec;sec=x[2];return (h?'<div class="nav-section">'+esc(sec)+'</div>':'')+'<button data-action="'+esc(x[0])+'">'+esc(x[1])+'</button>'}).join('');
  document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>show(b.dataset.action));
 }
-async function show(action){
- document.getElementById('side').classList.remove('open');document.getElementById('title').textContent=action==='dashboard'?'Dashboard':action;
- const c=document.getElementById('content');c.innerHTML='<div class="panel">Memuat...</div>';
+function setLoading(){ $('content').innerHTML='<div class="panel loading">Memuat data...</div>' }
+function setError(e){$('content').innerHTML='<div class="panel"><div class="msg err">'+esc(e.message||e)+'</div></div>'}
+function markNav(action){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.action===action))}
+async function show(action){state.current=action;markNav(action);$('side').classList.remove('open');$('title').textContent=titleFor(action);setLoading();try{switch(action){case'dashboard':return renderDashboard((await api('dashboard')).data);case'profil.get':return renderProfil((await api('profil.get')).data);case'jadwal.list':return renderJadwal((await api('jadwal.list')).data);case'kelas.list':return renderKelas((await api('kelas.list')).data);case'jurnal.list':return renderJurnal((await api('jurnal.list')).data);case'absensi.list':return renderAbsensi(await api('absensi.list',{tanggal:today(),kodeKelas:''}));case'materi.list':return renderMateri((await api('materi.list')).data);case'tugas.list':return renderTugas((await api('tugas.list')).data);case'penilaian.list':return renderPenilaian((await api('penilaian.list')).data);case'laporan':return renderLaporan();case'admin.guru.list':return renderAdminGuru((await api(action)).data);case'admin.kelas.list':return renderAdminKelas((await api(action)).data);case'admin.siswa.list':return renderAdminSiswa((await api(action)).data);case'admin.audit':return renderAudit((await api(action)));default:fail('Modul belum tersedia')}}catch(e){setError(e)}}
+function titleFor(a){return ({dashboard:'Dashboard','profil.get':'Profil Guru','jadwal.list':'Jadwal Mengajar','kelas.list':'Administrasi Kelas','jurnal.list':'Jurnal Mengajar','absensi.list':'Absensi Siswa','materi.list':'Materi Pembelajaran','tugas.list':'Tugas','penilaian.list':'Penilaian',laporan:'Laporan','admin.guru.list':'Data Guru','admin.kelas.list':'Data Kelas','admin.siswa.list':'Data Siswa','admin.audit':'Audit Database'})[a]||a}
+function today(){return new Date().toISOString().slice(0,10)}
+function rowsTable(rows,opts={}){if(!rows||!rows.length)return'<div class="empty">Belum ada data.</div>';const cols=opts.cols||Object.keys(rows[0]);return'<div class="tablewrap"><table><thead><tr>'+cols.map(c=>'<th>'+esc(opts.labels?.[c]||c)+'</th>').join('')+(opts.action?'<th>Aksi</th>':'')+'</tr></thead><tbody>'+rows.map((r,i)=>'<tr>'+cols.map(c=>'<td>'+esc(formatCell(r[c],c))+'</td>').join('')+(opts.action?'<td>'+opts.action(r,i)+'</td>':'')+'</tr>').join('')+'</tbody></table></div>'}
+function formatCell(v,c){if(v===null||v===undefined)return'';if(c==='STATUS'&&String(v))return String(v);return v}
+function selectOptions(items,valueField,labelField,empty='Pilih...'){return '<option value="">'+empty+'</option>' +(items||[]).map(x=>'<option value="'+esc(x[valueField])+'">'+esc(x[labelField])+'</option>').join('')}
+function classOptions(){return selectOptions(state.boot?.kelas||[],'KODE_KELAS','NAMA_KELAS')}
+function renderDashboard(d){$('content').innerHTML='<div class="grid"><div class="stat"><span class="label">Guru</span><b>'+esc(d.guru)+'</b></div><div class="stat"><span class="label">Tahun Ajaran</span><b>'+esc(d.tahunAjaran||'-')+'</b></div><div class="stat"><span class="label">Semester</span><b>'+esc(d.semester||'-')+'</b></div><div class="stat"><span class="label">Jumlah Kelas</span><b>'+esc(d.jumlahKelas)+'</b></div><div class="stat"><span class="label">Jumlah Jam Mengajar</span><b>'+esc(d.jumlahJP)+'</b></div><div class="stat"><span class="label">Jurnal</span><b>'+esc(d.counts.jurnal)+'</b></div><div class="stat"><span class="label">Materi</span><b>'+esc(d.counts.materi)+'</b></div><div class="stat"><span class="label">Penilaian</span><b>'+esc(d.counts.penilaian)+'</b></div></div><div class="panel"><h3>Kelengkapan Administrasi</h3><div class="kpi">'+[['Jurnal',d.administrasi.jurnal],['Materi',d.administrasi.materi],['Tugas',d.administrasi.tugas],['Penilaian',d.administrasi.penilaian]].map(x=>'<div class="mini">'+esc(x[0])+': <strong class="'+(x[1]?'status-ok':'status-no')+'">'+(x[1]?'Sudah ada':'Belum ada')+'</strong></div>').join('')+'</div></div>'}
+function renderProfil(d){$('content').innerHTML='<div class="panel"><h3>Profil Guru</h3><div class="formgrid">'+Object.keys(d).map(k=>'<div><label>'+esc(k)+'</label><input value="'+esc(d[k])+'" readonly></div>').join('')+'</div></div>'}
+function renderJadwal(rows){const cols=['HARI','JAM_MULAI','JAM_SELESAI','MAPEL','KODE_KELAS','RUANG','JP','TAHUN_AJARAN','SEMESTER'];$('content').innerHTML='<div class="panel"><div class="actions"><button class="btn" onclick="showScheduleForm()">+ Tambah Jadwal</button></div></div><div id="scheduleForm"></div><div class="panel"><h3>Jadwal Mengajar</h3>'+rowsTable(rows,{cols,labels:{KODE_KELAS:'Kelas',JAM_MULAI:'Mulai',JAM_SELESAI:'Selesai',TAHUN_AJARAN:'Tahun Ajaran'}})+'</div>'}
+function showScheduleForm(){ $('scheduleForm').innerHTML='<div class="panel"><h3>Tambah Jadwal</h3><form onsubmit="saveSchedule(event)"><div class="formgrid three"><div><label>Hari</label><select name="HARI"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div><div><label>Jam Mulai</label><input name="JAM_MULAI" type="time"></div><div><label>Jam Selesai</label><input name="JAM_SELESAI" type="time"></div><div><label>Mata Pelajaran</label><input name="MAPEL" required></div><div><label>Kelas</label><select name="KODE_KELAS" required>'+classOptions()+'</select></div><div><label>Ruang</label><input name="RUANG"></div><div><label>JP</label><input name="JP" type="number" min="1" value="1"></div></div><div class="actions" style="margin-top:12px"><button class="btn" type="submit">Simpan</button><button class="btn light" type="button" onclick="document.getElementById(&quot;scheduleForm&quot;).innerHTML=&quot;&quot;">Batal</button></div></form></div>'}
+async function saveSchedule(e){e.preventDefault();const o=Object.fromEntries(new FormData(e.target).entries());try{await api('jadwal.save',{data:o});alert('Jadwal berhasil disimpan.');await show('jadwal.list')}catch(x){alert(x.message)}}
+function renderKelas(rows){const cols=['KODE_KELAS','NAMA_KELAS','TINGKAT','JURUSAN','WALI_NUPTK','TAHUN_AJARAN','SEMESTER','STATUS'];$('content').innerHTML='<div class="panel"><h3>Administrasi Kelas</h3><p class="muted">Pilih kelas untuk melihat daftar siswa.</p>'+rowsTable(rows,{cols,labels:{KODE_KELAS:'Kode',NAMA_KELAS:'Kelas',WALI_NUPTK:'Wali'}})+'</div><div class="panel"><h3>Daftar Siswa</h3><div class="toolbar"><div class="field"><label>Kelas</label><select id="studentClass">'+classOptions()+'</select></div><button class="btn" onclick="loadStudents()">Tampilkan</button></div><div id="studentResult"></div></div>'}
+async function loadStudents(){const k=$('studentClass').value;if(!k){$('studentResult').innerHTML='<div class="msg warn">Pilih kelas.</div>';return}try{const j=await api('siswa.list',{kodeKelas:k});$('studentResult').innerHTML=rowsTable(j.data,{cols:['NISN','NAMA','JK','KODE_KELAS','STATUS'],labels:{NISN:'NISN',NAMA:'Nama',JK:'JK',KODE_KELAS:'Kelas'}})}catch(e){$('studentResult').innerHTML='<div class="msg err">'+esc(e.message)+'</div>'}}
+function renderJurnal(rows){const cols=['TANGGAL','KODE_KELAS','MAPEL','MATERI','KEGIATAN','KEHADIRAN','CATATAN'];$('content').innerHTML='<div class="panel"><button class="btn" onclick="showJurnalForm()">+ Tambah Jurnal</button></div><div id="jurnalForm"></div><div class="panel"><h3>Riwayat Jurnal</h3>'+rowsTable(rows,{cols,labels:{KODE_KELAS:'Kelas',KEGIATAN:'Kegiatan'}})+'</div>'}
+function showJurnalForm(){ $('jurnalForm').innerHTML='<div class="panel"><h3>Jurnal Mengajar</h3><form onsubmit="saveJurnal(event)"><div class="formgrid"><div><label>Tanggal</label><input name="TANGGAL" type="date" value="'+today()+'" required></div><div><label>Kelas</label><select name="KODE_KELAS" required>'+classOptions()+'</select></div><div><label>Mata Pelajaran</label><input name="MAPEL" required></div><div><label>Materi</label><input name="MATERI" required></div><div class="field full"><label>Kegiatan Pembelajaran</label><textarea name="KEGIATAN" required></textarea></div><div><label>Kehadiran</label><input name="KEHADIRAN"></div><div><label>Catatan</label><input name="CATATAN"></div></div><div class="actions" style="margin-top:12px"><button class="btn" type="submit">Simpan Jurnal</button><button class="btn light" type="button" onclick="document.getElementById(&quot;jurnalForm&quot;).innerHTML=&quot;&quot;">Batal</button></div><div id="jurnalMsg"></div></form></div>'}
+async function saveJurnal(e){e.preventDefault();try{await api('jurnal.save',{data:Object.fromEntries(new FormData(e.target).entries())});$('jurnalMsg').innerHTML='<div class="msg ok">Jurnal berhasil disimpan.</div>';setTimeout(()=>show('jurnal.list'),400)}catch(x){$('jurnalMsg').innerHTML='<div class="msg err">'+esc(x.message)+'</div>'}}
+async function renderAbsensi(resp){const rows=resp.data||[];$('content').innerHTML='<div class="panel"><h3>Absensi Siswa</h3><div class="toolbar"><div class="field small"><label>Tanggal</label><input id="attDate" type="date" value="'+today()+'"></div><div class="field"><label>Kelas</label><select id="attClass">'+classOptions()+'</select></div><button class="btn" onclick="loadAttendanceForm()">Muat Siswa</button></div><div id="attendanceArea"></div></div><div class="panel"><h3>Data Absensi Tersimpan</h3>'+rowsTable(rows,{cols:['TANGGAL','KODE_KELAS','NISN','NAMA','STATUS','KETERLAMBATAN'],labels:{KODE_KELAS:'Kelas',NISN:'NISN',NAMA:'Nama',KETERLAMBATAN:'Terlambat'}})+'</div>'}
+async function loadAttendanceForm(){
+ const k=$('attClass').value,d=$('attDate').value;
+ if(!k){$('attendanceArea').innerHTML='<div class="msg warn">Pilih kelas.</div>';return}
  try{
-  if(action==='dashboard'){const j=await api('dashboard');renderDashboard(j.data);return}
-  if(action==='profil.get'){const j=await api(action);c.innerHTML='<div class="panel"><h3>Profil Guru</h3>'+table([j.data])+'</div>';return}
-  if(action==='laporan'){const j=await api(action,{jenis:'jurnal'});c.innerHTML='<div class="panel"><h3>Laporan Jurnal</h3>'+table(j.data.rows)+'</div>';return}
-  const j=await api(action);c.innerHTML='<div class="panel"><h3>'+esc(action)+'</h3>'+table(j.data)+'</div>';
- }catch(e){c.innerHTML='<div class="panel err">'+esc(e.message)+'</div>'}
+  const j=await api('siswa.list',{kodeKelas:k});
+  const existing=await api('absensi.list',{tanggal:d,kodeKelas:k});
+  const map={};(existing.data||[]).forEach(x=>map[x.NISN]=x);
+  const body=(j.data||[]).map((s,i)=>{
+   const ex=map[s.NISN]||{};
+   return `<tr><td>${esc(s.NISN)}</td><td>${esc(s.NAMA)}</td><td><select id="ast_${i}"><option ${((ex.STATUS||'Hadir')==='Hadir')?'selected':''}>Hadir</option><option ${(ex.STATUS==='Sakit')?'selected':''}>Sakit</option><option ${(ex.STATUS==='Izin')?'selected':''}>Izin</option><option ${(ex.STATUS==='Alpa')?'selected':''}>Alpa</option></select></td><td><input id="alt_${i}" value="${esc(ex.KETERLAMBATAN||'')}" placeholder="menit"></td></tr>`;
+  }).join('');
+  $('attendanceArea').innerHTML=`<div class="tablewrap"><table><thead><tr><th>NISN</th><th>Nama</th><th>Status</th><th>Keterlambatan</th></tr></thead><tbody>${body}</tbody></table></div><div class="stickyActions"><button class="btn success" onclick="saveAttendance()">Simpan Absensi</button></div>`;
+  state.data.attStudents=j.data||[];
+ }catch(e){$('attendanceArea').innerHTML='<div class="msg err">'+esc(e.message)+'</div>'}
 }
-function renderDashboard(d){
- document.getElementById('content').innerHTML=`
- <div class="grid">
-  <div class="stat">Guru<b>${esc(d.guru)}</b></div><div class="stat">Tahun Ajaran<b>${esc(d.tahunAjaran)}</b></div>
-  <div class="stat">Semester<b>${esc(d.semester)}</b></div><div class="stat">Jumlah Kelas<b>${d.jumlahKelas}</b></div>
-  <div class="stat">Jumlah JP<b>${d.jumlahJP}</b></div>
- </div>
- <div class="panel"><h3>Status Administrasi</h3><p>Jurnal: ${d.administrasi.jurnal?'✓':'—'} &nbsp; Materi: ${d.administrasi.materi?'✓':'—'} &nbsp; Tugas: ${d.administrasi.tugas?'✓':'—'} &nbsp; Penilaian: ${d.administrasi.penilaian?'✓':'—'}</p></div>`;
+async function saveAttendance(){const d=$('attDate').value,k=$('attClass').value,items=(state.data.attStudents||[]).map((s,i)=>({tanggal:d,kodeKelas:k,nisn:s.NISN,nama:s.NAMA,status:$('ast_'+i).value,keterlambatan:$('alt_'+i).value}));try{const j=await api('absensi.batchSave',{items});alert(j.message);await show('absensi.list')}catch(e){alert(e.message)}}
+function renderMateri(rows){const cols=['TIMESTAMP','KODE_KELAS','MAPEL','TUJUAN','MATERI','METODE','MEDIA','CATATAN'];$('content').innerHTML='<div class="panel"><button class="btn" onclick="showMateriForm()">+ Tambah Materi</button></div><div id="materiForm"></div><div class="panel"><h3>Materi Pembelajaran</h3>'+rowsTable(rows,{cols,labels:{KODE_KELAS:'Kelas'}})+'</div>'}
+function showMateriForm(){ $('materiForm').innerHTML='<div class="panel"><h3>Tambah Materi</h3><form onsubmit="saveSimple(event,\'materi.save\',\'materiForm\')"><div class="formgrid"><div><label>Kelas</label><select name="KODE_KELAS" required>'+classOptions()+'</select></div><div><label>Mata Pelajaran</label><input name="MAPEL" required></div><div class="field full"><label>Tujuan Pembelajaran</label><textarea name="TUJUAN"></textarea></div><div class="field full"><label>Materi</label><textarea name="MATERI" required></textarea></div><div><label>Metode</label><input name="METODE"></div><div><label>Media</label><input name="MEDIA"></div><div class="field full"><label>Catatan</label><textarea name="CATATAN"></textarea></div></div><div class="actions"><button class="btn" type="submit">Simpan</button></div></form></div>'}
+function renderTugas(rows){const cols=['TIMESTAMP','TUGAS','TANGGAL','KODE_KELAS','BATAS_PENGUMPULAN','STATUS'];$('content').innerHTML='<div class="panel"><button class="btn" onclick="showTugasForm()">+ Tambah Tugas</button></div><div id="tugasForm"></div><div class="panel"><h3>Tugas</h3>'+rowsTable(rows,{cols,labels:{KODE_KELAS:'Kelas',BATAS_PENGUMPULAN:'Batas'}})+'</div>'}
+function showTugasForm(){ $('tugasForm').innerHTML='<div class="panel"><h3>Tambah Tugas</h3><form onsubmit="saveSimple(event,\'tugas.save\',\'tugasForm\')"><div class="formgrid"><div class="field full"><label>Tugas</label><textarea name="TUGAS" required></textarea></div><div><label>Tanggal</label><input name="TANGGAL" type="date" value="'+today()+'"></div><div><label>Kelas</label><select name="KODE_KELAS" required>'+classOptions()+'</select></div><div><label>Batas Pengumpulan</label><input name="BATAS_PENGUMPULAN" type="date"></div><div><label>Status</label><select name="STATUS"><option>AKTIF</option><option>SELESAI</option></select></div></div><div class="actions"><button class="btn" type="submit">Simpan</button></div></form></div>'}
+async function saveSimple(e,action,formId){e.preventDefault();try{await api(action,{data:Object.fromEntries(new FormData(e.target).entries())});alert('Data berhasil disimpan.');await show(action.replace('.save','.list'))}catch(x){const f=$(formId);f.insertAdjacentHTML('beforeend','<div class="msg err">'+esc(x.message)+'</div>')}}
+function renderPenilaian(rows){const cols=['TIMESTAMP','KODE_KELAS','MAPEL','NISN','JENIS','NILAI','CATATAN'];$('content').innerHTML='<div class="panel"><button class="btn" onclick="showScoreForm()">+ Input Nilai</button></div><div id="scoreForm"></div><div class="panel"><h3>Penilaian</h3>'+rowsTable(rows,{cols,labels:{KODE_KELAS:'Kelas',NISN:'NISN',JENIS:'Jenis'}})+'</div>'}
+async function showScoreForm(){ $('scoreForm').innerHTML='<div class="panel"><h3>Input Nilai Siswa</h3><div class="toolbar"><div class="field"><label>Kelas</label><select id="scoreClass">'+classOptions()+'</select></div><button class="btn" onclick="loadScoreStudents()">Muat Siswa</button></div><div id="scoreStudents"></div></div>'}
+async function loadScoreStudents(){
+ const k=$('scoreClass').value;if(!k)return;
+ try{
+  const j=await api('siswa.list',{kodeKelas:k});state.data.scoreStudents=j.data||[];
+  const body=state.data.scoreStudents.map((s,i)=>`<tr><td>${esc(s.NISN)}</td><td>${esc(s.NAMA)}</td><td><input id="score_${i}" type="number" min="0" max="100"></td><td><input id="note_${i}"></td></tr>`).join('');
+  $('scoreStudents').innerHTML=`<div class="formgrid three"><div><label>Mata Pelajaran</label><input id="scoreMapel"></div><div><label>Jenis</label><select id="scoreJenis"><option>FORMATIF</option><option>SUMATIF</option></select></div><div><label>Catatan Umum</label><input id="scoreNote"></div></div><div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>NISN</th><th>Nama</th><th>Nilai</th><th>Catatan</th></tr></thead><tbody>${body}</tbody></table></div><div class="stickyActions"><button class="btn success" onclick="saveScores()">Simpan Semua Nilai</button></div>`;
+ }catch(e){$('scoreStudents').innerHTML='<div class="msg err">'+esc(e.message)+'</div>'}
 }
-document.getElementById('loginBtn').onclick=login;
-document.getElementById('logoutBtn').onclick=()=>{localStorage.removeItem('ag_session');location.reload()};
-document.getElementById('menuBtn').onclick=()=>document.getElementById('side').classList.toggle('open');
-document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
-try{const s=JSON.parse(localStorage.getItem('ag_session')||'null');if(s){state.token=s.token;state.user=s.user;document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');buildNav();show('dashboard')}}catch(_){}
+async function saveScores(){const k=$('scoreClass').value,mapel=$('scoreMapel').value,jenis=$('scoreJenis').value,note=$('scoreNote').value,items=(state.data.scoreStudents||[]).map((s,i)=>({kodeKelas:k,mapel,nisn:s.NISN,jenis,nilai:$('score_'+i).value,catatan:$('note_'+i).value||note})).filter(x=>x.nilai!=='');if(!items.length){alert('Masukkan minimal satu nilai.');return}try{const j=await api('penilaian.batchSave',{items});alert(j.message);await show('penilaian.list')}catch(e){alert(e.message)}}
+function renderLaporan(){$('content').innerHTML='<div class="panel"><h3>Laporan</h3><div class="toolbar"><div class="field"><label>Jenis Laporan</label><select id="reportType"><option value="jurnal">Jurnal Mengajar</option><option value="absensi">Absensi Siswa</option><option value="kegiatan">Kegiatan Pembelajaran</option><option value="rekap_kelas">Rekap Kelas</option><option value="rekap_guru">Rekap Guru</option></select></div><button class="btn" onclick="loadReport()">Tampilkan</button><button class="btn light" onclick="window.print()">Cetak</button></div><div id="reportResult"></div></div>'}
+async function loadReport(){try{const j=await api('laporan',{jenis:$('reportType').value});$('reportResult').innerHTML='<div class="printOnly"><h2>Administrasi Guru SMK</h2><p>'+esc(titleForReport($('reportType').value))+'</p></div>'+rowsTable(j.data.rows)}catch(e){$('reportResult').innerHTML='<div class="msg err">'+esc(e.message)+'</div>'}}
+function titleForReport(v){return({jurnal:'Laporan Jurnal Mengajar',absensi:'Laporan Absensi Siswa',kegiatan:'Laporan Kegiatan Pembelajaran',rekap_kelas:'Rekap Kelas',rekap_guru:'Rekap Guru'})[v]||'Laporan'}
+function renderAdminGuru(rows){$('content').innerHTML='<div class="panel"><h3>Data Guru</h3><p class="muted">Tampilan administrasi data guru. Penambahan/perubahan master akan ditambahkan setelah struktur approval ditetapkan.</p>'+rowsTable(rows,{cols:['NUPTK','NAMA','MAPEL','JABATAN','STATUS','NO_HP','EMAIL','ALAMAT']})+'</div>'}
+function renderAdminKelas(rows){$('content').innerHTML='<div class="panel"><h3>Data Kelas</h3>'+rowsTable(rows,{cols:['KODE_KELAS','NAMA_KELAS','TINGKAT','JURUSAN','WALI_NUPTK','TAHUN_AJARAN','SEMESTER','STATUS']})+'</div>'}
+function renderAdminSiswa(rows){$('content').innerHTML='<div class="panel"><h3>Data Siswa</h3>'+rowsTable(rows,{cols:['NISN','NAMA','JK','KODE_KELAS','TAHUN_AJARAN','SEMESTER','STATUS']})+'</div>'}
+function renderAudit(j){$('content').innerHTML='<div class="panel"><h3>Audit Database</h3><div class="msg '+(j.success?'ok':'err')+'">'+esc(j.message)+'</div>'+rowsTable(j.sheets||[],{cols:['key','sheet','ok','message'],labels:{key:'Key',sheet:'Sheet',ok:'Status'}})+'</div>'}
+async function refreshCurrent(){try{if(state.current==='dashboard')await loadBoot();await show(state.current)}catch(e){setError(e)}}
+$('loginBtn').onclick=login;$('logoutBtn').onclick=async()=>{try{await api('logout')}catch(e){}localStorage.removeItem('ag_session');location.reload()};$('menuBtn').onclick=()=>$('side').classList.toggle('open');$('password').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+(async function(){try{const s=JSON.parse(localStorage.getItem('ag_session')||'null');if(s?.token){state.token=s.token;state.user=s.user;openApp();await loadBoot();await show('dashboard')}}catch(e){localStorage.removeItem('ag_session')}})();
 </script>
 </body>
 </html>
