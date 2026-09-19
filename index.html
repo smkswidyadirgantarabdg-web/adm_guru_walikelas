@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Administrasi Guru SMK</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f7fb;color:#172033}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 30px #0001}
+.login .card{width:min(420px,100%)}label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d8deea;border-radius:9px;background:#fff}
+.primary{width:100%;border:0;border-radius:9px;padding:12px;background:#263b73;color:#fff;font-weight:700;margin-top:16px}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.side{background:#16213e;color:#fff;padding:18px;position:sticky;top:0;height:100vh}
+.brand{font-size:20px;font-weight:800;margin-bottom:20px}.nav button{width:100%;text-align:left;background:transparent;color:#dce5ff;border:0;padding:11px;border-radius:8px;margin:2px 0}
+.nav button:hover,.nav button.active{background:#ffffff18;color:#fff}.main{padding:24px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{background:#fff;padding:18px;border-radius:14px;box-shadow:0 2px 12px #0000000a}.stat b{font-size:28px;display:block;margin-top:8px}
+.panel{background:#fff;border-radius:14px;padding:18px;margin-top:18px;box-shadow:0 2px 12px #0000000a}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:10px;border-bottom:1px solid #edf0f5;text-align:left;white-space:nowrap}th{background:#f8f9fc;position:sticky;top:0}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:8px;padding:9px 13px;background:#263b73;color:#fff}.btn.light{background:#edf1f8;color:#26324d}.msg{margin-top:12px;padding:10px;border-radius:8px;background:#f2f5fb}.ok{background:#eaf8ef}.err{background:#fff0f0}
+.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#edf1f8;font-size:12px}.menuBtn{display:none}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:fixed;z-index:10;left:-260px;width:240px;transition:.2s}.side.open{left:0}.menuBtn{display:block}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid,.formgrid{grid-template-columns:1fr}.main{padding:14px}}
+</style>
+</head>
+<body>
+<section id="login" class="login">
+<div class="card">
+<h1>Administrasi Guru SMK</h1><p>Contoh akun: <b>admin/admin123</b> atau <b>guru/guru123</b></p>
+<label>Username</label><input id="username" autocomplete="username">
+<label>Password</label><input id="password" type="password" autocomplete="current-password">
+<button class="primary" id="loginBtn">Masuk</button><div id="loginMsg"></div>
+</div>
+</section>
+
+<section id="app" class="app hidden">
+<aside id="side" class="side"><div class="brand">ADMIN GURU SMK</div><div id="userInfo"></div><div class="nav" id="nav"></div></aside>
+<main class="main">
+<div class="top"><button class="btn menuBtn" id="menuBtn">☰</button><h2 id="title">Dashboard</h2><button class="btn light" id="logoutBtn">Keluar</button></div>
+<div id="content"></div>
+</main>
+</section>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbybsYVXZJZpzzY7RWUuABT0b4uhi_W4vs19l-qQy74ZCyVtwh_Lm1nu0JCAXQfwUD3FTg/exec';
+const state={token:'',user:null,boot:null,cache:{}};
+
+async function api(action,data={}){
+  if(API_URL.startsWith('GANTI_')) throw new Error('API_URL belum diisi pada index.html.');
+  const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,token:state.token,...data})});
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  const j=await res.json(); if(!j.success) throw new Error(j.message||'Permintaan gagal'); return j;
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function setMsg(id,msg,ok=false){const e=document.getElementById(id);if(e)e.innerHTML='<div class="msg '+(ok?'ok':'err')+'">'+esc(msg)+'</div>'}
+function table(rows){
+ if(!rows?.length)return '<p>Belum ada data.</p>';
+ const cols=Object.keys(rows[0]); return '<div class="tablewrap"><table><thead><tr>'+cols.map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(r[c])+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+}
+async function login(){
+ const b=document.getElementById('loginBtn');b.disabled=true;
+ try{const j=await apiLogin(document.getElementById('username').value,document.getElementById('password').value);
+ state.token=j.token;state.user=j.user;localStorage.setItem('ag_session',JSON.stringify({token:state.token,user:state.user}));
+ document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');buildNav();await show('dashboard');
+ }catch(e){setMsg('loginMsg',e.message)}finally{b.disabled=false}
+}
+async function apiLogin(username,password){
+ if(API_URL.startsWith('GANTI_')) throw new Error('API_URL belum diisi pada index.html.');
+ const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'login',username,password})});
+ const j=await r.json();if(!j.success)throw new Error(j.message);return j;
+}
+function buildNav(){
+ const items=[['dashboard','Dashboard'],['profil.get','Profil Guru'],['jadwal.list','Jadwal Mengajar'],['kelas.list','Administrasi Kelas'],['jurnal.list','Jurnal Mengajar'],['absensi.list','Absensi Siswa'],['materi.list','Materi Pembelajaran'],['tugas.list','Tugas'],['penilaian.list','Penilaian'],['laporan','Laporan']];
+ if(state.user.role==='ADMIN') items.push(['admin.guru.list','Data Guru'],['admin.kelas.list','Data Kelas'],['admin.siswa.list','Data Siswa']);
+ document.getElementById('userInfo').innerHTML='<span class="badge">'+esc(state.user.role)+'</span><p>'+esc(state.user.nama||state.user.username)+'</p>';
+ document.getElementById('nav').innerHTML=items.map(([a,t])=>`<button data-action="${a}">${t}</button>`).join('');
+ document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>show(b.dataset.action));
+}
+async function show(action){
+ document.getElementById('side').classList.remove('open');document.getElementById('title').textContent=action==='dashboard'?'Dashboard':action;
+ const c=document.getElementById('content');c.innerHTML='<div class="panel">Memuat...</div>';
+ try{
+  if(action==='dashboard'){const j=await api('dashboard');renderDashboard(j.data);return}
+  if(action==='profil.get'){const j=await api(action);c.innerHTML='<div class="panel"><h3>Profil Guru</h3>'+table([j.data])+'</div>';return}
+  if(action==='laporan'){const j=await api(action,{jenis:'jurnal'});c.innerHTML='<div class="panel"><h3>Laporan Jurnal</h3>'+table(j.data.rows)+'</div>';return}
+  const j=await api(action);c.innerHTML='<div class="panel"><h3>'+esc(action)+'</h3>'+table(j.data)+'</div>';
+ }catch(e){c.innerHTML='<div class="panel err">'+esc(e.message)+'</div>'}
+}
+function renderDashboard(d){
+ document.getElementById('content').innerHTML=`
+ <div class="grid">
+  <div class="stat">Guru<b>${esc(d.guru)}</b></div><div class="stat">Tahun Ajaran<b>${esc(d.tahunAjaran)}</b></div>
+  <div class="stat">Semester<b>${esc(d.semester)}</b></div><div class="stat">Jumlah Kelas<b>${d.jumlahKelas}</b></div>
+  <div class="stat">Jumlah JP<b>${d.jumlahJP}</b></div>
+ </div>
+ <div class="panel"><h3>Status Administrasi</h3><p>Jurnal: ${d.administrasi.jurnal?'✓':'—'} &nbsp; Materi: ${d.administrasi.materi?'✓':'—'} &nbsp; Tugas: ${d.administrasi.tugas?'✓':'—'} &nbsp; Penilaian: ${d.administrasi.penilaian?'✓':'—'}</p></div>`;
+}
+document.getElementById('loginBtn').onclick=login;
+document.getElementById('logoutBtn').onclick=()=>{localStorage.removeItem('ag_session');location.reload()};
+document.getElementById('menuBtn').onclick=()=>document.getElementById('side').classList.toggle('open');
+document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+try{const s=JSON.parse(localStorage.getItem('ag_session')||'null');if(s){state.token=s.token;state.user=s.user;document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');buildNav();show('dashboard')}}catch(_){}
+</script>
+</body>
+</html>
